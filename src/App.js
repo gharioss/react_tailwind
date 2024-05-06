@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Navbar from './components/navbar/Navbar';
 import Welcome from './views/welcome/Welcome';
 import Footer from './components/footer/Footer';
+import ImagePicker from './components/cards/details/ImagePicker';
 
 function App() {
   return (
@@ -10,6 +11,7 @@ function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<Welcome />} />
+        <Route path="/painting/:id" element={<ImagePicker />}></Route>
       </Routes>
       <Footer />
     </BrowserRouter>
