@@ -1,7 +1,6 @@
-import { useState } from 'react'
+import React from 'react';
 import { Transition, Dialog, TransitionChild, DialogPanel, DialogTitle } from '@headlessui/react';
-import { XMarkIcon } from '@heroicons/react/24/outline'
-import React, { forwardRef } from 'react';
+import { XMarkIcon } from '@heroicons/react/24/outline';
 
 const products = [
   {
@@ -22,18 +21,15 @@ const products = [
     price: '$32.00',
     quantity: 1,
     imageSrc: 'https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-02.jpg',
-    imageAlt:
-      'Front of satchel with blue canvas body, black straps and handle, drawstring top, and front zipper pouch.',
+    imageAlt: 'Front of satchel with blue canvas body, black straps and handle, drawstring top, and front zipper pouch.',
   },
   // More products...
-]
+];
 
-const Cart = forwardRef((props, ref, toggleCart) => {
-  const [open, setOpen] = useState(true)
-
+const Cart = ({ isOpen, toggleCart }) => {
   return (
-    <Transition show={open} ref={ref}>
-      <Dialog className="relative z-10" onClose={setOpen}>
+    <Transition show={isOpen}>
+      <Dialog className="relative z-10" onClose={toggleCart}>
         <TransitionChild
           enter="ease-in-out duration-500"
           enterFrom="opacity-0"
@@ -65,7 +61,7 @@ const Cart = forwardRef((props, ref, toggleCart) => {
                           <button
                             type="button"
                             className="relative -m-2 p-2 text-gray-400 hover:text-gray-500"
-                            onClick={() => {setOpen(false); }}
+                            onClick={toggleCart}
                           >
                             <span className="absolute -inset-0.5" />
                             <span className="sr-only">Close panel</span>
@@ -137,7 +133,7 @@ const Cart = forwardRef((props, ref, toggleCart) => {
                           <button
                             type="button"
                             className="font-medium text-indigo-600 hover:text-indigo-500"
-                            onClick={() => setOpen(false)}
+                            onClick={toggleCart}
                           >
                             Continue Shopping
                             <span aria-hidden="true"> &rarr;</span>
@@ -153,7 +149,7 @@ const Cart = forwardRef((props, ref, toggleCart) => {
         </div>
       </Dialog>
     </Transition>
-  )
-});
+  );
+};
 
 export default Cart;

@@ -2,7 +2,7 @@ import React from "react";
 import { LuShoppingCart } from "react-icons/lu";
 import { Link } from 'react-router-dom';
 
-const Navbar = ({ toggleCart }) => {
+const Navbar = ({ onCartClick }) => {
   return (
     <nav className="flex justify-between px-20 py-10 items-center bg-white sticky top-0">
         <Link to="/" className="text-xl text-gray-800 font-bold">Muriel Napoli</Link>
@@ -14,7 +14,7 @@ const Navbar = ({ toggleCart }) => {
             <input className="ml-2 outline-none bg-transparent font-" type="text" name="search" id="search" placeholder="Search..." />
             </div>
             <ul className="flex items-center space-x-6">
-            <button onClick={toggleCart} className="font-semibold text-gray-700"><LuShoppingCart className="h-6 w-6" />
+            <button onClick={onCartClick} className="font-semibold text-gray-700"><LuShoppingCart className="h-6 w-6" />
             </button>
             
             <Link to="/sign-in" className="font-semibold text-gray-700">Register  |  Login</Link>

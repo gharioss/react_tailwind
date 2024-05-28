@@ -10,30 +10,16 @@ import { useState } from 'react';
 import { Transition } from '@headlessui/react';
 
 function App() {
-  const [showCart, setShowCart] = useState(false);
+  const [isCartOpen, setIsCartOpen] = useState(false);
 
   const toggleCart = () => {
-    setShowCart(prevShowCart => !prevShowCart);
+    setIsCartOpen(!isCartOpen);
   };
 
   return (
     <BrowserRouter>
-      <Navbar toggleCart={toggleCart} />
-      {showCart && (
-          <Transition
-          show={showCart}
-          enter="transition-opacity duration-75"
-          enterFrom="opacity-0"
-          enterTo="opacity-100"
-          leave="transition-opacity duration-150"
-          leaveFrom="opacity-100"
-          leaveTo="opacity-0"
-        >
-          {(ref) => (
-            <Cart ref={ref} toggleCart={toggleCart} />
-          )}
-        </Transition>
-      )}
+      <Navbar onCartClick={toggleCart} />
+      <Cart isOpen={isCartOpen} toggleCart={toggleCart} />
       
       <Routes>
         <Route path="/" element={<Welcome />} />
