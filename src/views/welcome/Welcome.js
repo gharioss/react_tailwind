@@ -1,5 +1,4 @@
 import React from "react";
-import CardMain from "../../components/cards/CardMain";
 import FilterCategory from "../../components/Filter";
 
 function Welcome() {
