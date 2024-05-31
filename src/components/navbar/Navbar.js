@@ -3,7 +3,7 @@ import { LuShoppingCart, LuMessageCircle } from "react-icons/lu";
 
 import { Link } from 'react-router-dom';
 
-const Navbar = ({ onCartClick }) => {
+const Navbar = ({ onCartClick, onMessageClick }) => {
   return (
     <nav className="flex justify-between px-20 py-10 items-center bg-white sticky top-0">
         <Link to="/" className="text-xl text-gray-800 font-bold">Muriel Napoli</Link>
@@ -15,11 +15,11 @@ const Navbar = ({ onCartClick }) => {
             <input className="ml-2 outline-none bg-transparent font-" type="text" name="search" id="search" placeholder="Search..." />
             </div>
             <ul className="flex items-center space-x-6">
+            <button onClick={onMessageClick} className="font-semibold text-gray-700">
+              <LuMessageCircle className="h-6 w-6" />
+            </button> 
             <button onClick={onCartClick} className="font-semibold text-gray-700">
               <LuShoppingCart className="h-6 w-6" />
-            </button>
-            <button onClick={onCartClick} className="font-semibold text-gray-700">
-              <LuMessageCircle className="h-6 w-6" />
             </button>
             
             <Link to="/sign-in" className="font-semibold text-gray-700">Register  |  Login</Link>

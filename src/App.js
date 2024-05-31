@@ -7,7 +7,7 @@ import ProductDetail from './components/cards/details/ProductDetail';
 import Register from './components/Register';
 import Cart from './components/Cart';
 import { useState } from 'react';
-import { Transition } from '@headlessui/react';
+import Message from './components/Message';
 
 function App() {
   const [isCartOpen, setIsCartOpen] = useState(false);
@@ -23,8 +23,9 @@ function App() {
 
   return (
     <BrowserRouter>
-      <Navbar onCartClick={toggleCart} onMessageClick={toggleCart} />
+      <Navbar onCartClick={toggleCart} onMessageClick={toggleMessage} />
       <Cart isOpen={isCartOpen} toggleCart={toggleCart} />
+      <Message isOpen={isMessageOpen} toggleMessage={toggleMessage} />
       
       <Routes>
         <Route path="/" element={<Welcome />} />
