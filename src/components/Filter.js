@@ -1,57 +1,40 @@
-/*
-  This example requires some changes to your config:
-  
-  ```
-  // tailwind.config.js
-  module.exports = {
-    // ...
-    plugins: [
-      // ...
-      require('@tailwindcss/forms'),
-    ],
-  }
-  ```
-*/
-import { Fragment, useState } from 'react'
-import { Dialog, Disclosure, Transition } from '@headlessui/react'
-import { XMarkIcon } from '@heroicons/react/24/outline'
-import { ChevronDownIcon, PlusIcon } from '@heroicons/react/20/solid'
-import CardMain from './cards/CardMain'
+
+import { Fragment, useEffect, useState } from 'react';
+import { Dialog, Disclosure, Transition } from '@headlessui/react';
+import { XMarkIcon } from '@heroicons/react/24/outline';
+import { ChevronDownIcon, PlusIcon } from '@heroicons/react/20/solid';
+import CardMain from './cards/CardMain';
+import axios from "axios";
 
 const filters = [
   {
     id: 'color',
     name: 'Color',
     options: [
-      { value: 'white', label: 'White' },
-      { value: 'beige', label: 'Beige' },
       { value: 'blue', label: 'Blue' },
-      { value: 'brown', label: 'Brown' },
-      { value: 'green', label: 'Green' },
       { value: 'purple', label: 'Purple' },
+      { value: 'green', label: 'Green' },
+      { value: 'red', label: 'Red' },
     ],
   },
   {
-    id: 'category',
-    name: 'Category',
+    id: 'prices',
+    name: 'Prices',
     options: [
-      { value: 'new-arrivals', label: 'All New Arrivals' },
-      { value: 'tees', label: 'Tees' },
-      { value: 'crewnecks', label: 'Crewnecks' },
-      { value: 'sweatshirts', label: 'Sweatshirts' },
-      { value: 'pants-shorts', label: 'Pants & Shorts' },
+      { value: '<1.000', label: '<1.000' },
+      { value: '1.000 - 3.000', label: '1.000 - 3.000' },
+      { value: '3.000 - 10.000', label: '3.000 - 10.000' },
+      { value: '>10.000', label: '>10.000' },
     ],
   },
   {
     id: 'sizes',
     name: 'Sizes',
     options: [
-      { value: 'xs', label: 'XS' },
-      { value: 's', label: 'S' },
-      { value: 'm', label: 'M' },
-      { value: 'l', label: 'L' },
-      { value: 'xl', label: 'XL' },
-      { value: '2xl', label: '2XL' },
+      { value: 'small', label: 'Small' },
+      { value: 'medium', label: 'Medium' },
+      { value: 'large', label: 'Large' },
+      { value: 'extra-large', label: 'Extra-large' },
     ],
   },
 ]
@@ -61,7 +44,32 @@ function classNames(...classes) {
 }
 
 export default function FilterCategory({ paintings }) {
-  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
+  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+  const [checkedValues, setCheckedValues] = useState({});
+
+  useEffect(() => {
+    if (Object.keys(checkedValues).length > 0) {
+      axios.post('http://localhost:8080/paintings/filterPaintings', checkedValues)
+        .then((response) => {
+          console.log('Success:', response.data);
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+    }
+  }, [checkedValues]);
+
+  const handleFilterChange = (e) => {
+    const { name, value, checked } = e.target;
+    setCheckedValues((prev) => {
+      const values = prev[name] || [];
+      if (checked) {
+        return { ...prev, [name]: [...values, value] };
+      } else {
+        return { ...prev, [name]: values.filter((v) => v !== value) };
+      }
+    });    
+  };
 
   return (
     <div className="bg-white">
@@ -127,10 +135,11 @@ export default function FilterCategory({ paintings }) {
                                   <div key={option.value} className="flex items-center">
                                     <input
                                       id={`${section.id}-${optionIdx}-mobile`}
-                                      name={`${section.id}[]`}
+                                      name={`${section.id}`}
                                       defaultValue={option.value}
                                       type="checkbox"
                                       className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                                      onChange={handleFilterChange}
                                     />
                                     <label
                                       htmlFor={`${section.id}-${optionIdx}-mobile`}
@@ -185,10 +194,11 @@ export default function FilterCategory({ paintings }) {
                             <div key={option.value} className="flex items-center">
                               <input
                                 id={`${section.id}-${optionIdx}`}
-                                name={`${section.id}[]`}
+                                name={`${section.id}`}
                                 defaultValue={option.value}
                                 type="checkbox"
                                 className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                                onChange={handleFilterChange}
                               />
                               <label htmlFor={`${section.id}-${optionIdx}`} className="ml-3 text-sm text-gray-600">
                                 {option.label}
@@ -206,7 +216,7 @@ export default function FilterCategory({ paintings }) {
             {/* Product grid */}
             <div className="mt-6 md:col-span-3 lg:col-span-2 lg:mt-0 xl:col-span-3 flex flex-wrap">
                 {paintings.map((painting, index) => (
-                    <CardMain key={index} name={painting.name} price={painting.price} />
+                    <CardMain key={index} painting={painting} />
                 ))}
             </div>
           </div>

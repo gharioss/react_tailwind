@@ -1,20 +1,15 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import FilterCategory from "../../components/Filter";
 
 function Welcome() {
-    const data = [
-        { name: 'Tableau 1', price: '$1500' },
-        { name: 'Tableau 2', price: '$1200' },
-        { name: 'Tableau 2', price: '$1200' },
-        { name: 'Tableau 2', price: '$1200' },
-        { name: 'Tableau 2', price: '$1200' },
-        { name: 'Tableau 2', price: '$1200' },
-        { name: 'Tableau 2', price: '$1200' },
-        { name: 'Tableau 2', price: '$1200' },
-        { name: 'Tableau 2', price: '$1200' },
-        { name: 'Tableau 2', price: '$1200' },
-        { name: 'Tableau 2', price: '$1200' },
-    ];
+    const [paintingsData, setPaintingsData] = useState([]);
+
+    useEffect(() => {
+        axios.get("http://localhost:8080/paintings").then((response) => {
+            setPaintingsData(response.data);
+        });
+      }, []);
 
     return (
         <div>
@@ -23,7 +18,7 @@ function Welcome() {
                 src="images/second_welcome_banner_image.jpg"
                 alt="banner"
             />
-            <FilterCategory paintings={data} />
+            <FilterCategory paintings={paintingsData} />
                 
         </div>
     );
