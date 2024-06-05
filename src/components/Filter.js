@@ -46,12 +46,19 @@ function classNames(...classes) {
 export default function FilterCategory({ paintings }) {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [checkedValues, setCheckedValues] = useState({});
+  const [paintingsData, setPaintingsData] = useState([]);
+
+  useEffect(() => {
+      axios.get("http://localhost:8080/paintings").then((response) => {
+          setPaintingsData(response.data);
+      });
+    }, []);
 
   useEffect(() => {
     if (Object.keys(checkedValues).length > 0) {
       axios.post('http://localhost:8080/paintings/filterPaintings', checkedValues)
         .then((response) => {
-          console.log('Success:', response.data);
+          setPaintingsData(response.data);
         })
         .catch((error) => {
           console.error('Error:', error);
@@ -215,7 +222,7 @@ export default function FilterCategory({ paintings }) {
 
             {/* Product grid */}
             <div className="mt-6 md:col-span-3 lg:col-span-2 lg:mt-0 xl:col-span-3 flex flex-wrap">
-                {paintings.map((painting, index) => (
+                {paintingsData.map((painting, index) => (
                     <CardMain key={index} painting={painting} />
                 ))}
             </div>

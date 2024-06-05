@@ -3,14 +3,6 @@ import axios from "axios";
 import FilterCategory from "../../components/Filter";
 
 function Welcome() {
-    const [paintingsData, setPaintingsData] = useState([]);
-
-    useEffect(() => {
-        axios.get("http://localhost:8080/paintings").then((response) => {
-            setPaintingsData(response.data);
-        });
-      }, []);
-
     return (
         <div>
             <img
@@ -18,7 +10,7 @@ function Welcome() {
                 src="images/second_welcome_banner_image.jpg"
                 alt="banner"
             />
-            <FilterCategory paintings={paintingsData} />
+            <FilterCategory />
                 
         </div>
     );
