@@ -8,6 +8,15 @@ import axios from "axios";
 
 const filters = [
   {
+    id: 'availability',
+    name: 'Availability',
+    options: [
+      { value: 'available', label: 'For sale' },
+      { value: 'unavailable', label: 'Not for sale' },
+      { value: 'sold', label: 'Sold' },
+    ],
+  },
+  {
     id: 'color',
     name: 'Color',
     options: [
@@ -15,16 +24,19 @@ const filters = [
       { value: 'purple', label: 'Purple' },
       { value: 'green', label: 'Green' },
       { value: 'red', label: 'Red' },
+      { value: 'black', label: 'Black' },
     ],
   },
   {
     id: 'prices',
     name: 'Prices',
     options: [
-      { value: '<1.000', label: '<1.000' },
-      { value: '1.000 - 3.000', label: '1.000 - 3.000' },
-      { value: '3.000 - 10.000', label: '3.000 - 10.000' },
-      { value: '>10.000', label: '>10.000' },
+      { value: '100-500', label: 'Under 500$' },
+      { value: '500-1000', label: '500$ - 1,000$' },
+      { value: '1000-2000', label: '1,000$ - 2,000$' },
+      { value: '2000-5.000', label: '2,000$ - 5,000$' },
+      { value: '5000-10000', label: '5,000$ - 10,000$' },
+      { value: '10000-1000000', label: 'OVer 10,000$' },
     ],
   },
   {
@@ -34,7 +46,24 @@ const filters = [
       { value: 'small', label: 'Small' },
       { value: 'medium', label: 'Medium' },
       { value: 'large', label: 'Large' },
-      { value: 'extra-large', label: 'Extra-large' },
+      { value: 'oversized', label: 'Oversized' },
+    ],
+  },
+  {
+    id: 'orientation',
+    name: 'Orientation',
+    options: [
+      { value: 'horizontal', label: 'Horizontal' },
+      { value: 'vertical', label: 'Vertical' },
+      { value: 'square', label: 'Square' },
+    ],
+  },
+  {
+    id: 'type',
+    name: 'Type',
+    options: [
+      { value: 'normal', label: 'Normal' },
+      { value: 'multi', label: 'Multiple Panel' },
     ],
   },
 ]
@@ -43,7 +72,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default function FilterCategory({ paintings }) {
+export default function FilterCategory() {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [checkedValues, setCheckedValues] = useState({});
   const [paintingsData, setPaintingsData] = useState([]);
@@ -193,7 +222,7 @@ export default function FilterCategory({ paintings }) {
               <div className="hidden lg:block">
                 <form className="space-y-10 divide-y divide-gray-200">
                   {filters.map((section, sectionIdx) => (
-                    <div key={section.name} className={sectionIdx === 0 ? null : 'pt-10'}>
+                    <div key={section.name} className={sectionIdx === 0 ? null : 'pt-3'}>
                       <fieldset>
                         <legend className="block text-sm font-medium text-gray-900">{section.name}</legend>
                         <div className="space-y-3 pt-6">
