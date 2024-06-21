@@ -19,7 +19,26 @@ import RegisterWithATool from "./connexion/RegisterWithATool";
 */
 export default function Register() {
     const [loginState, setloginState] = useState(false);
+    const [formData, setFormData] = useState({
+      first_name: "",
+      last_name: "",
+      email: "",
+      password: "",
+      confirm_password: "",
+      stay_logged_in: false,
+    });
 
+    const handleInputData = (input) => (e) => {
+      const { value } = e.target;
+  
+      setFormData((prevState) => ({
+        ...prevState,
+        [input]: value,
+      }));
+
+      console.log(formData)
+    };
+  
     const changeLoginState = () => {
         setloginState((current) => !current);
       };
@@ -42,7 +61,7 @@ export default function Register() {
               </div>
   
               <div className="mt-5">
-              { loginState ? <Login /> : <Signin /> }
+              { loginState ? <Login handleFormData={handleInputData} values={formData} /> : <Signin handleFormData={handleInputData} values={formData} /> }
   
                 <RegisterWithATool />
               </div>

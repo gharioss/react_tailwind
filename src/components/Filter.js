@@ -5,6 +5,7 @@ import { XMarkIcon } from '@heroicons/react/24/outline';
 import { ChevronDownIcon, PlusIcon } from '@heroicons/react/20/solid';
 import CardMain from './cards/CardMain';
 import axios from "axios";
+import { Masonry } from '@mui/lab';
 
 const filters = [
   {
@@ -250,11 +251,17 @@ export default function FilterCategory() {
             </aside>
 
             {/* Product grid */}
-            <div className="mt-6 md:col-span-3 lg:col-span-2 lg:mt-0 xl:col-span-3 flex flex-wrap">
+            {/* <div className="mt-6 md:col-span-3 lg:col-span-2 lg:mt-0 xl:col-span-3 flex flex-wrap">
                 {paintingsData.map((painting, index) => (
                     <CardMain key={index} painting={painting} />
                 ))}
-            </div>
+            </div> */}
+            <Masonry columns={4} spacing={3} className='md:col-span-3 lg:col-span-2 lg:mt-0 xl:col-span-3'>
+              {paintingsData.map((painting, index) => (
+                <CardMain key={index} sx='auto' painting={painting} />
+              ))}
+            </Masonry>
+            
           </div>
         </main>
       </div>

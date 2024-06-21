@@ -1,23 +1,7 @@
-import { useState } from "react"
-import SmallFormInput from "../inputsForm/SmallFormInput"
 import LargeFormInput from "../inputsForm/LargeFormInput"
 import BasicButton from "../inputsForm/BasicButton"
 
-/*
-  This example requires some changes to your config:
-  
-  ```
-  // tailwind.config.js
-  module.exports = {
-    // ...
-    plugins: [
-      // ...
-      require('@tailwindcss/forms'),
-    ],
-  }
-  ```
-*/
-export default function Login() {
+export default function Login({ handleFormData, values }) {
     return (
         
         <>
