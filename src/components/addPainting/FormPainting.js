@@ -13,7 +13,6 @@ function FormPainting() {
     const [allOrientation, setallOrientation] = useState([]);
     const [allType, setallType] = useState([]);
     const [files, setFiles] = useState([]);
-    const [message, setMessage] = useState('');
   
     const handleFileChange = (e) => {
       setFiles(e.target.files);
@@ -32,7 +31,7 @@ function FormPainting() {
       });
 
     useEffect(() => {
-        axios.get("http://localhost:8080/size").then((response) => {
+        axios.get("http://localhost:8000/size").then((response) => {
             setallHeight(response.data.height)
             setallWidth(response.data.width)
             setallDepth(response.data.depth)
@@ -60,14 +59,24 @@ function FormPainting() {
         for (let i = 0; i < files.length; i++) {
           formData.append('files', files[i]);
         }
+
+        formData.append('name', paintingFormData.name)
+        formData.append('price', paintingFormData.price)
+        formData.append('height', paintingFormData.height)
+        formData.append('width', paintingFormData.width)
+        formData.append('depth', paintingFormData.depth)
+        formData.append('color', paintingFormData.color)
+        formData.append('availability', paintingFormData.availability)
+        formData.append('orientation', paintingFormData.orientation)
+        formData.append('type_painting', paintingFormData.type_painting)
     
         try {
-          const response = await axios.post('http://localhost:8080/paintings/upload', {formData, paintingFormData}, {
+          const response = await axios.post('http://localhost:8000/paintings/upload', formData, {
             headers: {
               'Content-Type': 'multipart/form-data',
             },
           });
-          console.log(response.data.message);
+          console.log(response.statusText === "OK");
         } catch (error) {
           console.log('File upload failed.');
         }
@@ -110,7 +119,6 @@ function FormPainting() {
               Upload
             </button>
           </form>
-          {message && <p className="mt-4 text-sm text-red-500">{message}</p>}
         </div>
       </div>
     </div>

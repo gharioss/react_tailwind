@@ -27,7 +27,7 @@ export default function Signin() {
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-        await axios.post('http://localhost:8080/users/register', { formData });
+        await axios.post('http://localhost:8000/users/register', { formData });
         console.log('User registered successfully');
     } catch (error) {
         console.error('Error registering:', error);

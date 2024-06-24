@@ -79,14 +79,14 @@ export default function FilterCategory() {
   const [paintingsData, setPaintingsData] = useState([]);
 
   useEffect(() => {
-      axios.get("http://localhost:8080/paintings").then((response) => {
+      axios.get("http://localhost:8000/paintings").then((response) => {
           setPaintingsData(response.data);
       });
     }, []);
 
   useEffect(() => {
     if (Object.keys(checkedValues).length > 0) {
-      axios.post('http://localhost:8080/paintings/filterPaintings', checkedValues)
+      axios.post('http://localhost:8000/paintings/filterPaintings', checkedValues)
         .then((response) => {
           setPaintingsData(response.data);
         })
@@ -256,7 +256,7 @@ export default function FilterCategory() {
                     <CardMain key={index} painting={painting} />
                 ))}
             </div> */}
-            <Masonry columns={4} spacing={3} className='md:col-span-3 lg:col-span-2 lg:mt-0 xl:col-span-3'>
+            <Masonry columns={3} spacing={3} className='md:col-span-3 lg:col-span-2 lg:mt-0 xl:col-span-3'>
               {paintingsData.map((painting, index) => (
                 <CardMain key={index} sx='auto' painting={painting} />
               ))}

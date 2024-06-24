@@ -24,7 +24,7 @@ export default function Login({ setToken }) {
       const handleRegister = async (e) => {
         e.preventDefault();
         try {
-            await axios.post('http://localhost:8080/users/login', { formData })
+            await axios.post('http://localhost:8000/users/login', { formData })
             .then((response) => {
                 console.log(response.data)
                 setToken(response.data.guid);
