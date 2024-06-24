@@ -2,15 +2,32 @@ import SmallFormInput from "../inputsForm/SmallFormInput"
 import LargeFormInput from "../inputsForm/LargeFormInput"
 import BasicButton from "../inputsForm/BasicButton"
 import axios from "axios";
+import { useState } from "react";
 
 
-export default function Signin({ handleFormData, values }) {
+export default function Signin() {
+    const [formData, setFormData] = useState({
+        first_name: "",
+        last_name: "",
+        email: "",
+        password: "",
+        confirm_password: "",
+        stay_logged_in: false,
+      });
+  
+      const handleInputData = (input) => (e) => {
+        const { value } = e.target;
+    
+        setFormData((prevState) => ({
+          ...prevState,
+          [input]: value,
+        }));
+      };
 
   const handleRegister = async (e) => {
     e.preventDefault();
-    console.log('aaaaaaaaaaaaaaaa')
     try {
-        await axios.post('http://localhost:8080/users/register', { values });
+        await axios.post('http://localhost:8080/users/register', { formData });
         console.log('User registered successfully');
     } catch (error) {
         console.error('Error registering:', error);
@@ -20,13 +37,13 @@ export default function Signin({ handleFormData, values }) {
         <>
         <form className="space-y-6">
             <div className="flex flex-row">
-                <SmallFormInput type={'text'} label={"First name"} value={values.first_name} changeFormData={handleFormData('first_name')} />
-                <SmallFormInput type={'text'} label={"Last name"} value={values.last_name} changeFormData={handleFormData('last_name')} />
+                <SmallFormInput type={'text'} label={"First name"} value={formData.first_name} changeFormData={handleInputData('first_name')} />
+                <SmallFormInput type={'text'} label={"Last name"} value={formData.last_name} changeFormData={handleInputData('last_name')} />
             </div>
 
-        <LargeFormInput label={'Email address'} type={'email'} value={values.email} changeFormData={handleFormData('email')} />
-        <LargeFormInput label={'Password'} type={'password'} value={values.password} changeFormData={handleFormData('password')} />
-        <LargeFormInput label={'Confirm Password'} type={'password'} value={values.confirm_password} changeFormData={handleFormData('confirm_password')} />
+        <LargeFormInput label={'Email address'} type={'email'} value={formData.email} changeFormData={handleInputData('email')} />
+        <LargeFormInput label={'Password'} type={'password'} value={formData.password} changeFormData={handleInputData('password')} />
+        <LargeFormInput label={'Confirm Password'} type={'password'} value={formData.confirm_password} changeFormData={handleInputData('confirm_password')} />
 
         <div className="flex items-center justify-between">
             <div className="flex items-center">
