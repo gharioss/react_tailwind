@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { PhotoIcon } from '@heroicons/react/24/solid'
 import axios from "axios";
 import SelectFormInput from '../inputsForm/SelectFormInput';
+import { FaArrowLeftLong } from "react-icons/fa6";
+import { Link } from 'react-router-dom';
 
 
 function FormPainting() {
@@ -100,6 +102,10 @@ function FormPainting() {
 
   return (
     <div className='mx-auto sm:max-w-xl md:max-w-3xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-[100rem] lg:px-8'>
+      <Link to='/administrator' className='flex'>
+        <FaArrowLeftLong className='mb-5 h-6 w-6 mr-5' /> 
+        <p>Retour</p>
+      </Link>
     <form>
       <div className="space-y-12">
         <div className="border-b border-gray-900/10 pb-12">
