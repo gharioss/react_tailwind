@@ -8,8 +8,10 @@ import Register from './components/Register';
 import Cart from './components/Cart';
 import { useEffect, useState } from 'react';
 import Message from './components/Message';
-import FormPainting from './components/administrator/FormPainting';
+import FormPainting from './components/administrator/add/FormPainting';
 import MainAdminPage from './components/administrator/MainAdminPage';
+import EditListPainting from './components/administrator/edit/EditListPainting';
+import EditFormPainting from './components/administrator/edit/EditFormPainting';
 
 function App() {
   const [isCartOpen, setIsCartOpen] = useState(false);
@@ -39,8 +41,10 @@ function App() {
         <Route path="/" element={<Welcome />} />
         <Route path="/painting/:id" element={<ProductDetail />} />
         <Route path="/sign-in" element={<Register token={token} setToken={setToken} />} />
-        <Route path="/add_painting" element={<FormPainting />} />
         <Route path="/administrator" element={<MainAdminPage />} />
+        <Route path="/add_painting" element={<FormPainting />} />
+        <Route path="/all_paintings" element={<EditListPainting />} />
+        <Route path="/edit_painting/:id" element={<EditFormPainting />} />
       </Routes>
       <Footer />
     </BrowserRouter>

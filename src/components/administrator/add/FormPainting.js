@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { PhotoIcon } from '@heroicons/react/24/solid'
 import axios from "axios";
-import SelectFormInput from '../inputsForm/SelectFormInput';
+import SelectFormInput from '../../inputsForm/SelectFormInput';
 import { FaArrowLeftLong } from "react-icons/fa6";
 import { Link } from 'react-router-dom';
 
@@ -24,7 +24,6 @@ function FormPainting() {
         preview: URL.createObjectURL(file)
       }));
       setFilesToDisplay(prevFiles => [...prevFiles, ...filePreviews]);
-      
       
       setFiles(prevFiles => [...prevFiles, ...e.target.files]);
     };

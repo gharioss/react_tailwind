@@ -74,7 +74,6 @@ function classNames(...classes) {
 }
 
 export default function ProductDetail() {
-  const [selectedColor, setSelectedColor] = useState(product.colors[0])
   const { id } = useParams();
   const [paintingsData, setPaintingsData] = useState([]);
 
