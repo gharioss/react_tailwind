@@ -5,6 +5,7 @@ import { XMarkIcon } from '@heroicons/react/24/outline';
 import { ChevronDownIcon, PlusIcon } from '@heroicons/react/20/solid';
 import CardMain from './cards/CardMain';
 import axios from "axios";
+import { Masonry } from '@mui/lab';
 
 const filters = [
   {
@@ -78,14 +79,16 @@ export default function FilterCategory() {
   const [paintingsData, setPaintingsData] = useState([]);
 
   useEffect(() => {
-      axios.get("http://localhost:8080/paintings").then((response) => {
+      axios.get("http://localhost:8000/paintings").then((response) => {
           setPaintingsData(response.data);
       });
     }, []);
 
   useEffect(() => {
+
+    console.log(checkedValues)
     if (Object.keys(checkedValues).length > 0) {
-      axios.post('http://localhost:8080/paintings/filterPaintings', checkedValues)
+      axios.post('http://localhost:8000/paintings/filterPaintings', checkedValues)
         .then((response) => {
           setPaintingsData(response.data);
         })
@@ -97,10 +100,13 @@ export default function FilterCategory() {
 
   const handleFilterChange = (e) => {
     const { name, value, checked } = e.target;
+
     setCheckedValues((prev) => {
       const values = prev[name] || [];
       if (checked) {
         return { ...prev, [name]: [...values, value] };
+      } else if (name === 'search') {
+        return { ...prev, [name]: [value] };
       } else {
         return { ...prev, [name]: values.filter((v) => v !== value) };
       }
@@ -150,6 +156,12 @@ export default function FilterCategory() {
 
                   {/* Filters */}
                   <form className="mt-4">
+                    <div className="flex items-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 pt-0.5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                      </svg>
+                      <input className="ml-2 outline-none bg-transparent font-" type="text" name="search" id="search" placeholder="Search..." />
+                    </div>
                     {filters.map((section) => (
                       <Disclosure as="div" key={section.name} className="border-t border-gray-200 pb-4 pt-4">
                         {({ open }) => (
@@ -199,12 +211,6 @@ export default function FilterCategory() {
         </Transition.Root>
 
         <main className="mx-auto sm:max-w-xl md:max-w-3xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-[100rem] lg:px-8">
-          <div className="border-b border-gray-200 pb-10">
-            <h1 className="text-4xl font-bold tracking-tight text-gray-900">New Arrivals</h1>
-            <p className="mt-4 text-base text-gray-500">
-              Checkout out the latest release of Basic Tees, new and improved with four openings!
-            </p>
-          </div>
 
           <div className="pt-12 lg:grid lg:grid-cols-3 lg:gap-x-8 xl:grid-cols-4">
             <aside>
@@ -221,6 +227,15 @@ export default function FilterCategory() {
 
               <div className="hidden lg:block">
                 <form className="space-y-10 divide-y divide-gray-200">
+
+
+                <div className="flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 pt-0.5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                    <input className="ml-2 outline-none bg-transparent font-" type="text" name="search" id="search" placeholder="Search..." 
+                                onChange={handleFilterChange} />
+                    </div>
                   {filters.map((section, sectionIdx) => (
                     <div key={section.name} className={sectionIdx === 0 ? null : 'pt-3'}>
                       <fieldset>
@@ -250,11 +265,17 @@ export default function FilterCategory() {
             </aside>
 
             {/* Product grid */}
-            <div className="mt-6 md:col-span-3 lg:col-span-2 lg:mt-0 xl:col-span-3 flex flex-wrap">
+            {/* <div className="mt-6 md:col-span-3 lg:col-span-2 lg:mt-0 xl:col-span-3 flex flex-wrap">
                 {paintingsData.map((painting, index) => (
                     <CardMain key={index} painting={painting} />
                 ))}
-            </div>
+            </div> */}
+            <Masonry columns={3} spacing={3} className='md:col-span-3 lg:col-span-2 lg:mt-0 xl:col-span-3'>
+              {paintingsData.map((painting, index) => (
+                <CardMain key={index} sx='auto' painting={painting} />
+              ))}
+            </Masonry>
+            
           </div>
         </main>
       </div>

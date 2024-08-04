@@ -17,9 +17,9 @@ import RegisterWithATool from "./connexion/RegisterWithATool";
   }
   ```
 */
-export default function Register() {
+export default function Register({ token, setToken }) {
     const [loginState, setloginState] = useState(false);
-
+  
     const changeLoginState = () => {
         setloginState((current) => !current);
       };
@@ -42,7 +42,7 @@ export default function Register() {
               </div>
   
               <div className="mt-5">
-              { loginState ? <Login /> : <Signin /> }
+              { loginState ? <Login setToken={setToken} /> : <Signin setToken={setToken} /> }
   
                 <RegisterWithATool />
               </div>
