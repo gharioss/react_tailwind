@@ -21,7 +21,7 @@ function EditFormPainting() {
     const [allType, setallType] = useState([]);
     const [files, setFiles] = useState([]);
     const [filesToDisplay, setFilesToDisplay] = useState([]);
-    const [infoPainting, setInfoPainting] = useState([])
+    const [filesToDelete, setFilesToDelete] = useState([]);
     
     const [paintingFormData, setpaintingFormData] = useState({
         name: "",
@@ -51,27 +51,27 @@ function EditFormPainting() {
             orientation: data.id_orientation,
             type_painting: data.id_type_painting
           }));
-
+          console.log(response.data)
           var images = []
 
           response.data.forEach(painting => {
-            images.push(painting.image)
+            images.push({'painting': painting.image, 'id': painting.id_image})
           });
 
         const existingImageFiles = images.map((imageUrl, index) => ({
-          id: `existing-${index}`, // An identifier for existing images
-          file: null, // No file object for existing images
-          preview: '//localhost:8000/' + imageUrl
+          id: imageUrl.id, // An identifier for existing images
+          file: imageUrl.painting,
+          preview: '//localhost:8000/' + imageUrl.painting
         }));
-    
-        setFiles(prevFiles => [...prevFiles, ...existingImageFiles]);
-        setFilesToDisplay(prevFiles => [...prevFiles, ...existingImageFiles]);
 
-        console.log(response.data)
+        setFiles(existingImageFiles);
+        setFilesToDisplay(existingImageFiles);
+
       });
     }, []);
   
     const handleFileChange = (e) => {
+      console.log('FILESSSS, ', files)
       const selectedFiles = Array.from(e.target.files);
       const filePreviews = selectedFiles.map(file => ({
         file,
@@ -83,7 +83,12 @@ function EditFormPainting() {
     };
 
 
-  const handleRemove = (indexToRemove) => {
+  const handleRemove = (indexToRemove, idOfPainting) => {
+
+    setFilesToDelete(prevDeleteIds => [...prevDeleteIds, idOfPainting]);
+
+    console.log('idOfPainting, ', idOfPainting)
+
     setFilesToDisplay(prevFiles => prevFiles.filter((_, index) => index !== indexToRemove));
 
     setFiles(prevFiles => prevFiles.filter((_, index) => index !== indexToRemove));
@@ -109,7 +114,6 @@ function EditFormPainting() {
           ...prevState,
           [input]: value,
         }));
-        console.log(paintingFormData)
       };
 
       const handleSubmit = async (e) => {
@@ -117,6 +121,11 @@ function EditFormPainting() {
         const formData = new FormData();
         for (let i = 0; i < files.length; i++) {
           formData.append('files', files[i]);
+        }
+
+        console.log("filesToDelete", filesToDelete)
+        for (let i = 0; i < filesToDelete.length; i++) {
+          formData.append('deleteid', filesToDelete[i]);
         }
 
         formData.append('id_painting', id)
@@ -159,6 +168,7 @@ function EditFormPainting() {
           <div className="col-span-full">
       <div className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
         <div className="text-center">
+        {filesToDisplay.length > 0 && console.log('AAAAAAAAAAAAAA, ', files.length)}
           {filesToDisplay.length > 0 ? (
               <div className="mt-2 flex justify-center">
               <div className="grid grid-cols-5 gap-4">
@@ -166,7 +176,7 @@ function EditFormPainting() {
                   <div key={index} className="relative group">
                     <img src={file.preview} alt={`preview ${index}`} className="w-full h-full object-cover" />
                     <button
-                      onClick={() => handleRemove(index)}
+                      onClick={() => handleRemove(index, file.id)}
                       className="absolute top-0 right-0 m-1 p-1 text-white bg-red-500 rounded-full opacity-75 hover:opacity-100"
                     >
                       X
